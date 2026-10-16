@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+{% block title %}Pets - Pet Management System{% endblock %}
+{% block nav_pets %}active{% endblock %}
+{% block page_title %}Registered Pets{% endblock %}
+
+{% block content %}
+<section class="registry-hero">
+    <div class="hero-copy">
+        <span class="hero-eyebrow">A LITTLE LOVE, A LOT OF CARE</span>
+        <h2>Every pet has a story.<br><span>Keep theirs close.</span></h2>
+        <p>One happy place for all the important details about your pets and their people.</p>
+        <a class="button hero-button" href="{% url 'pet_create' %}"><span aria-hidden="true">＋</span> Register a pet</a>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+        <span class="hero-spark spark-a">✦</span>
+        <span class="hero-spark spark-b">✧</span>
+        <span class="hero-sun"></span>
+        <span class="hero-paw">🐾</span>
+        <span class="hero-caption">GOOD<br>THINGS<br>GROW HERE</span>
+    </div>
+</section>
+
+<section class="stat-grid" aria-label="Pet registry summary">
+    <article class="stat-card stat-pets">
+        <span class="stat-icon" aria-hidden="true">🐾</span>
+        <div><span class="stat-label">Registered pets</span><strong>{{ pet_count }}</strong></div>
+        <span class="stat-note">little personalities</span>
+    </article>
+    <article class="stat-card stat-owners">
+        <span class="stat-icon" aria-hidden="true">♡</span>
+        <div><span class="stat-label">Pet parents</span><strong>{{ owner_count }}</strong></div>
+        <span class="stat-note">caring humans</span>
+    </article>
+    <article class="stat-card stat-types">
+        <span class="stat-icon" aria-hidden="true">✿</span>
+        <div><span class="stat-label">Pet types</span><strong>{{ type_count }}</strong></div>
+        <span class="stat-note">kinds of friends</span>
+    </article>
+</section>
+
+<section class="card">
+    <div class="section-heading">
+        <div>
+            <span class="records-kicker">THE REGISTRY</span>
+            <h2>All pet records</h2>
+            <p class="muted">Your complete collection of registered companions</p>
+        </div>
+        <span class="record-count">{{ pet_count }} record{{ pet_count|pluralize }}</span>
+    </div>
+    {% if pets %}
+        <div class="table-wrap">
+            <table>
+                <thead>
+                <tr>
+                    <th>Pet ID</th>
+                    <th>Pet Name</th>
+                    <th>Type / Breed</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Owner</th>
+                    <th>Contact Number</th>
+                    <th>Date Registered</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for pet in pets %}
+                <tr>
+                    <td>#{{ pet.id }}</td>
+                    <td class="pet-name">{{ pet.name }}</td>
+                    <td><span class="type-pill">{{ pet.pet_type }}</span>{% if pet.breed %}<span class="subtext">{{ pet.breed }}</span>{% endif %}</td>
+                    <td>{{ pet.age }}</td>
+                    <td>{{ pet.get_gender_display }}</td>
+                    <td>{{ pet.owner_name }}</td>
+                    <td>{{ pet.contact_number }}</td>
+                    <td>{{ pet.date_registered|date:"M j, Y" }}</td>
+                    <td class="actions">
+                        <a href="{% url 'pet_update' pet.pk %}">Edit</a>
+                        <a class="delete-link" href="{% url 'pet_delete' pet.pk %}">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-state">
+            <span class="empty-icon" aria-hidden="true">🐾</span>
+            <h3>No pets registered yet</h3>
+            <p>Add a pet to start keeping its information organized.</p>
+            <a class="button" href="{% url 'pet_create' %}">Add the first pet</a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}{% if object %}Edit {{ object.name }}{% else %}Add a Pet{% endif %} - Pet Management System{% endblock %}
+{% block nav_add %}active{% endblock %}
+{% block page_title %}{% if object %}Edit Pet{% else %}Add a Pet{% endif %}{% endblock %}
+{% block topbar_meta %}{% endblock %}
+
+{% block content %}
+<section class="card form-card">
+    <div class="form-hero">
+        <span class="form-hero-icon" aria-hidden="true">✦</span>
+        <div>
+            <span class="form-kicker">{% if object %}UPDATE PROFILE{% else %}A NEW LITTLE STORY{% endif %}</span>
+            <h2>{% if object %}Update your pet's details{% else %}Let's meet your pet{% endif %}</h2>
+            <p>Fill in the details below to keep every important part of their story in one place.</p>
+        </div>
+        <span class="hero-orbit orbit-one" aria-hidden="true"></span>
+        <span class="hero-orbit orbit-two" aria-hidden="true"></span>
+    </div>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="error-summary">{{ form.non_field_errors }}</div>
+        {% endif %}
+        <section class="form-section">
+            <div class="form-section-heading">
+                <span class="section-number">01</span>
+                <div>
+                    <h3>About your pet</h3>
+                    <p>The details that make them one of a kind</p>
+                </div>
+            </div>
+            <div class="form-grid">
+                {% for field in form %}
+                    {% if field.name == "name" or field.name == "pet_type" or field.name == "breed" or field.name == "age" or field.name == "gender" %}
+                        <div class="form-field {% if field.errors %}has-error{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        <section class="form-section owner-section">
+            <div class="form-section-heading">
+                <span class="section-number">02</span>
+                <div>
+                    <h3>Pet parent details</h3>
+                    <p>Who should we contact about this pet?</p>
+                </div>
+            </div>
+            <div class="form-grid owner-grid">
+                {% for field in form %}
+                    {% if field.name == "owner_name" or field.name == "contact_number" %}
+                        <div class="form-field {% if field.errors %}has-error{% endif %}">
+                            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                            {{ field }}
+                            {% for error in field.errors %}<span class="field-error">{{ error }}</span>{% endfor %}
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        </section>
+        <div class="form-footer">
+            <p><span aria-hidden="true">✧</span> Pet ID and registration date are created automatically.</p>
+            <div class="form-actions">
+                <a class="button button-secondary" href="{% url 'pet_list' %}">Cancel</a>
+                <button class="button" type="submit">{% if object %}Save Changes{% else %}Register Pet <span aria-hidden="true">→</span>{% endif %}</button>
+            </div>
+        </div>
+    </form>
+</section>
+{% endblock %}

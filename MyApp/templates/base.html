@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Pet Management System{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+<div class="layout">
+    <aside class="sidebar">
+        <a class="brand" href="{% url 'pet_list' %}">
+            <span class="brand-icon" aria-hidden="true">🐾</span>
+            <span class="brand-name">Pet Management</span>
+        </a>
+        <nav aria-label="Main navigation">
+            <a href="{% url 'pet_list' %}" class="nav-link {% block nav_pets %}{% endblock %}">
+                <span class="nav-icon" aria-hidden="true">▣</span> Pets
+            </a>
+            <a href="{% url 'pet_create' %}" class="nav-link {% block nav_add %}{% endblock %}">
+                <span class="nav-icon" aria-hidden="true">＋</span> Add a Pet
+            </a>
+        </nav>
+    </aside>
+    <main class="content">
+        <header class="topbar">
+            <h1>{% block page_title %}Pets{% endblock %}</h1>
+            {% block topbar_meta %}<div class="topbar-meta">{% now "F j, Y" %}</div>{% endblock %}
+        </header>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% block content %}{% endblock %}
+    </main>
+</div>
+</body>
+</html>

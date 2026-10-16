@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block title %}Delete {{ object.name }} - Pet Management System{% endblock %}
+{% block page_title %}Delete Pet Record{% endblock %}
+
+{% block content %}
+<section class="card delete-card">
+    <h2>Are you sure?</h2>
+    <p>Delete the record for <strong>{{ object.name }}</strong> ({{ object.pet_type }})? This action cannot be undone.</p>
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-actions">
+            <a class="button button-secondary" href="{% url 'pet_list' %}">Cancel</a>
+            <button class="button button-danger" type="submit">Delete Pet</button>
+        </div>
+    </form>
+</section>
+{% endblock %}
